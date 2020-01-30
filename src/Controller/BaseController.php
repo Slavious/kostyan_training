@@ -23,13 +23,7 @@ class BaseController extends AbstractController
 
         ]);
 
-        /**
-         * @Route("/admin/building/add", name="buildinAdd")
-         */
-        public function buildingAdd()
-    {
-        return $this->render('admin/building_add.html.twig', []);
-    }
+
 
     }
 }
