@@ -1,0 +1,8 @@
+doctrine:
+  dbal:
+    url: mysql://root@localhost:3306/new
+    dbname: new
+    host: localhost
+    user: root
+    password: ''
+    driver: pdo_mysql
