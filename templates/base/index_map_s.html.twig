@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+<script src="js/jquery-3.2.1.min.js"></script>
+
+<!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden; 
+        
+      }
+
+a[href^="http://maps.google.com/maps"]{display:none !important}
+a[href^="https://maps.google.com/maps"]{display:none !important}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 28px;
+  
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #eee;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+#shadow {
+    background: #94d017; /* Цвет фона */
+    box-shadow: 0 0 5px rgba(0,0,0,0.5); /* Параметры тени */
+    padding: 5px;
+   }
+
+/* 
+  .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  
+  -webkit-transition: .4s;
+  transition: .4s;
+  background: #b1cd49;
+}
+*/
+
+
+input:checked + .slider {
+  background-color: #1d1838;
+  border:2px solid #9f5d40;
+
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 0px #9f5d40;
+  border:2px;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 1px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+/*CUSTOM*/
+#map {
+  height: 100%;
+}
+
+#floating-panel {
+  position: absolute;
+  top: 310px;
+  left: 10px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 1px;
+  line-height: 10px;
+  padding-left: 10px;
+  width:230px;
+  padding: 10px;
+  border: solid 1px #b76941;
+  text-align: inherit;
+}
+
+
+.clickme{
+  position: absolute;
+  z-index: 9999;
+  background: #a6ce37;
+  border-radius: 8px;
+  padding: 1px;
+  color: #fff;
+  text-decoration: none;
+  font-weight:bold;
+  top: 30%;
+  left:15px;
+  width: 215px;
+  font-size: 18px;
+}
+.res {
+  font-size:13px;
+  color:#522e1b;
+}
+.box{
+  position: absolute;
+  margin-top:-45px;
+  z-index: 9998;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: url("img/map_markers_new/.png");
+  background-size: cover;
+  padding-bottom: 100px;
+}
+
+h4{
+  float: left;
+}
+
+    </style>
+
+  </head>
+  <body>
+<a href="javascript:window.open('','_self').close();" style="text-decoration: none; color: white; font-size:35px;"><div style="position: absolute; z-index: 9999; top: 91%; left: 89.6%; background: #181438; border: solid #bd6545 2px; border-radius: 1px; padding: 20px; padding-left: 35px; padding-right: 35px;">НАЗАД</div></a> 
+
+<h2 style="text-align: center; color: #1d1737; padding: 4px; margin: 0px; background: url(); border-bottom: solid 1px #1d1737;"><b>ЛОКАЦІЯ</b></h2>
+
+<!--<a href="#" class="clickme" id="shadow">&nbsp;&nbsp;&nbsp;&nbsp;Инфраструктура<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="res" >(открыть/закрыть)</span></a>
+<div class="box">
+    
+</div>-->
+
+
+
+<div id="floating-panel">
+<h4>Прибрати оточення</h4><label class="switch" style="left:8.63%;">
+  <input type="checkbox" onclick="clearMarkers();">
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Метро</h4><label class="switch" style="left:61%;">
+  <input type="checkbox" onclick="showMarkers();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Школи</h4><label class="switch" style="left:60.3%;">
+  <input type="checkbox" onclick="showMarkers1();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Спорт</h4><label class="switch" style="left:62%;">
+  <input type="checkbox" onclick="showSports();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Розваги</h4><label class="switch" style="left:55%;">
+  <input type="checkbox" onclick="showEducation();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Парки</h4><label class="switch" style="left:61.9%;">
+  <input type="checkbox" onclick="showParks();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Магазини и ТРЦ</h4><label class="switch" style="left:21%;">
+  <input type="checkbox" onclick="showShop();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Медицина</h4><label class="switch" style="left:45.3%;">
+  <input type="checkbox" onclick="showMedical();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Посольство</h4><label class="switch" style="left:39.5%;">
+  <input type="checkbox" onclick="showEmbassy();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Суд</h4><label class="switch" style="left:71%;">
+  <input type="checkbox" onclick="showCourt();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Бізнес-центр</h4><label class="switch" style="left:35%;">
+  <input type="checkbox" onclick="showBc();" >
+  <div class="slider round"></div>
+</label>
+<br><br>
+<h4>Показати оточення</h4><label class="switch" style="left:10.5%;">
+  <input type="checkbox" onclick="showAll();" checked>
+  <div class="slider round"></div>
+</label>
+
+    </div>
+    
+    <div id="map"></div>
+    <script>
+// Hide all the elements in the DOM that have a class of "box"
+$('.box').hide();
+
+// Make sure all the elements with a class of "clickme" are visible and bound
+// with a click event to toggle the "box" state
+$('.clickme').each(function() {
+    $(this).show(0).on('click', function(e) {
+        // This is only needed if your using an anchor to target the "box" elements
+        e.preventDefault();
+        
+        // Find the next "box" element in the DOM
+        $(this).next('.box').slideToggle('fast');
+    });
+});
+// In the following example, markers appear when the user clicks on the map.
+// The markers are stored in an array.
+// The user can then click an option to hide, show or delete the markers.
+var map;
+
+var markersMetro1 = [];
+var markersMetro2 = [];
+var markersMetro3 = [];
+var markersMetro4 = [];
+
+var markersSchool1 = [];
+var markersSchool2 = [];
+var markersSchool3 = [];
+
+var markersSport1 = [];
+var markersSport2 = [];
+var markersSport3 = [];
+var markersSport4 = [];
+var markersSport5 = [];
+var markersSport6 = [];
+var markersSport7 = [];
+var markersSport8 = [];
+
+var markersParty1 = [];
+var markersParty2 = [];
+var markersParty3 = [];
+var markersParty4 = [];
+
+var markersPark1 = [];
+var markersPark2 = [];
+var markersPark3 = [];
+var markersPark4 = [];
+var markersPark5 = [];
+
+var markersShop1 = [];
+var markersShop2 = [];
+var markersShop3 = [];
+var markersShop4 = [];
+var markersShop5 = [];
+var markersShop6 = [];
+var markersShop7 = [];
+var markersShop8 = [];
+var markersShop9 = [];
+
+var markersMedical1 = [];
+var markersMedical2 = [];
+var markersMedical3 = [];
+var markersMedical4 = [];
+var markersMedical5 = [];
+
+var markers7 = [];
+var markers71 = [];
+var markers8 = [];
+var markers9 = [];
+
+var historicalOverlay;
+
+function initMap() {
+  var centered_map = {lat: 50.41431545, lng: 30.55306435};
+
+  var haightAshbury = {lat: 50.404383, lng: 30.555787};
+
+//МЕТРО
+  var metro1 = {lat: 50.4133583, lng: 30.52424669};
+  var metro2 = {lat: 50.41811653, lng: 30.54484606};
+  var metro3 = {lat: 50.40208976, lng: 30.56012392};
+  var metro4 = {lat: 50.4273595, lng: 30.5388649};
+//ШКОЛЫ
+  var school1 = {lat: 50.4098679, lng: 30.5479547};
+  var school2 = {lat: 50.408029, lng: 30.557828};
+  var school3 = {lat: 50.4184183, lng: 30.5527334};
+//СПОРТ
+  var sports1 = {lat: 50.40715683, lng: 30.55509746};
+  var sports2 = {lat: 50.41052774, lng: 30.54668069};
+  var sports3 = {lat: 50.4152, lng: 30.546644};
+  var sports4 = {lat: 50.4172105, lng: 30.54116};
+  var sports5 = {lat: 50.418764, lng: 30.5517775};
+  var sports6 = {lat: 50.413094, lng: 30.549323};
+  var sports7 = {lat: 50.426702, lng: 30.5437517};
+  var sports8 = {lat: 50.438846, lng: 30.516578};
+  
+//РАЗВЛЕЧЕНИЯ
+  var education1 = {lat:50.422187, lng:30.521103};
+  var education2 = {lat:50.4083565, lng:30.5545965};
+  var education3 = {lat:50.4116518, lng:30.5226927};
+  var education4 = {lat:50.43869587, lng:30.52309334};
+  
+//ПАРКИ
+  var parks1 = {lat:50.413942, lng:30.556263};
+  var parks2 = {lat:50.4290564, lng:30.5598343};
+  var parks3 = {lat:50.427904, lng:30.5647041};
+  var parks4 = {lat:50.434722, lng:30.554703};
+  var parks5 = {lat:50.4105579, lng:30.5588563};
+  
+//МАГАЗИНЫ и ТРЦ
+  var shop1 = {lat:50.404473, lng:30.549718};
+  var shop2 = {lat:50.4123259, lng:30.5225569};
+  var shop3 = {lat:50.400639, lng:30.564299};
+  var shop4 = {lat:50.416943, lng:30.5485386};
+  var shop5 = {lat:49.9160624, lng:29.7851183};
+  var shop6 = {lat:50.407235, lng:30.5550145};
+  var shop7 = {lat:50.4109465, lng:30.5467397};
+  var shop8 = {lat:50.4127125, lng:30.5455585};
+  var shop9 = {lat:50.4141508, lng:30.5387409};
+  
+//МЕДИЦИНА
+  var medical1 = {lat:50.4105633, lng:30.5461324};
+  var medical2 = {lat:50.41415137, lng:30.54234624};
+  var medical3 = {lat:50.4162615, lng:30.5461906};
+  var medical4 = {lat:50.419974, lng:30.543104};
+  var medical5 = {lat:50.414776, lng:30.549421};
+
+  //ПОСОЛЬСТВО
+  var embassy1 = {lat:50.40639783, lng:30.55764556};
+  var embassy2 = {lat:50.40931752, lng:30.55582166};
+
+  //Суд
+  var court1 = {lat:50.422591, lng:30.548862};
+
+  //БЦ
+  var bc1 = {lat:50.421336, lng:30.553472};
+
+
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    center: centered_map,
+    streetViewControl: false,
+    clickableIcons: true,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+  var imageBounds = {
+    //top
+    north: 50.4442629,
+    //bottom
+    south: 50.36605077,
+    //right
+    east: 30.6206131,
+    //left
+    west: 30.49255371
+  };
+
+  historicalOverlay = new google.maps.GroundOverlay(
+      'img/map_markers_new/.png');
+  historicalOverlay.setMap(map);
+
+  // This event listener will call addMarker() when the map is clicked.
+  map.addListener('', function(event) {
+    addMarker(event.latLng);
+  });
+
+  // Adds a marker at the center of the map.
+  addMarker(haightAshbury);
+  
+  // ШКОЛЫ
+  schooL1(school1);
+  schooL2(school2);
+  schooL3(school3);
+   
+  //МЕТРО 
+  metrO1(metro1);
+  metrO2(metro2);
+  metrO3(metro3);
+  metrO4(metro4);
+
+  //СПОРТ
+  sportS1(sports1);
+  sportS2(sports2);
+  sportS3(sports3);
+  sportS4(sports4);
+  sportS5(sports5);
+  sportS6(sports6);
+  sportS7(sports7);
+  sportS8(sports8);
+  
+  //РАЗВЛЕЧЕНИЯ
+  educatioN1(education1);
+  educatioN2(education2);
+  educatioN3(education3);
+  educatioN4(education4);
+
+  //ПАРКИ
+  parkS1(parks1);
+  parkS2(parks2);
+  parkS3(parks3);
+  parkS4(parks4);
+  parkS5(parks5);
+  
+
+  //МАГАЗИНЫ и ТРЦ
+  shoP1(shop1);
+  shoP2(shop2);
+  shoP3(shop3);
+  shoP4(shop4);
+  shoP5(shop5);
+  shoP6(shop6);
+  shoP7(shop7);
+  shoP8(shop8);
+  shoP9(shop9);
+  
+  //МЕДИЦИНА
+  medicaL1(medical1);
+  medicaL2(medical2);
+  medicaL3(medical3);
+  medicaL4(medical4);
+  medicaL5(medical5);
+
+  //ПОСОЛЬСТВО
+  embassy(embassy1);
+  embassY(embassy2);
+
+  //СУД
+  court(court1);
+
+  //БЦ
+  bc(bc1);
+}
+
+// Adds a marker to the map and push to the array.
+function addMarker(location) {
+  var image = 'img/map_markers_new/logo.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image,
+    title: ''
+  });
+  var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<img src="img/logo_2.png" width="100" style="float: left; margin: -5% 0px 0px 0px;"><h2 id="firstHeading" class="firstHeading;" style="text-align:center">EDEWEISS HOUSE</h2>'+
+      '<div id="bodyContent">'+
+      '<p align="center "></p>'+
+      '</div>'+
+      '</div>';
+  
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+}
+
+
+
+
+
+
+
+// Добавить место на карте
+
+//--------------------------------------------------------------------------------------METRO FUNCTION
+
+function metrO1(location) {
+  var image = 'img/map_markers_new/metro.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  
+var qq1 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">метро "Либідська"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center "></p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq1
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMetro1.push(marker);
+}
+
+function metrO2(location) {
+  var image = 'img/map_markers_new/metro.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  
+var qq11 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">метро "Дружби Народів"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center "></p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq11
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMetro2.push(marker);
+}
+
+function metrO3(location) {
+  var image = 'img/map_markers_new/metro.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  
+var qq3 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">метро "Видубичі"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center"></p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq3
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMetro3.push(marker);
+}
+
+function metrO4(location) {
+  var image = 'img/map_markers_new/metro.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  
+var qq4 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">метро "Печерська"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center "></p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq4
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMetro4.push(marker);
+}
+
+//--------------------------------------------------------------------------------------EDUCATION FUNCTION
+
+function schooL1(location) {
+  var image = 'img/map_markers_new/education.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq2 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Новопечерська школа</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Драгомирова, 9Б</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq2
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSchool1.push(marker);
+}
+function schooL2(location) {
+  var image = 'img/map_markers_new/education.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq22 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Середня школа №5</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Тимірязєвська, 36</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq22
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSchool1.push(marker);
+}
+function schooL3(location) {
+  var image = 'img/map_markers_new/education.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq23 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Середня школа №133</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Бастiонна, 36</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq23
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSchool1.push(marker);
+}
+
+//--------------------------------------------------------------------------------------SPORT FUNCTION
+
+function sportS1(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq3 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"Sport Life Печерськ"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Звіринецька, 59</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq3
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport1.push(marker);
+}
+
+function sportS2(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq33 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Фiтнес центр "GYMMAX"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Драгомирова, 9</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq33
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport2.push(marker);
+}
+
+function sportS3(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq333 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Спортивний клуб "АКВIЛОН SPORT"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">Професора Пiдвисоцького, 10/10</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq333
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport3.push(marker);
+}
+
+function sportS4(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq3333 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"FitCurves"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Дружби Народів, 21</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq3333
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport4.push(marker);
+}
+
+function sportS5(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq33333 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Басейн "Юність"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Бастіонна, 7</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq33333
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport5.push(marker);
+}
+
+function sportS6(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq333333 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Фiтнес-клуб "ERIX"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Кіквідзе, 17/10</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq333333
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport6.push(marker);
+}
+
+function sportS7(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq3333333 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"Tsarsky City Resort"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Старонаводницька, 13Б</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq3333333
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport7.push(marker);
+}
+
+function sportS8(location) {
+  var image = 'img/map_markers_new/sport.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq33333333 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">НСК "Олімпійський"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Велика Васильківська, 55</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq33333333
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersSport8.push(marker);
+}
+
+//--------------------------------------------------------------------------------------PARTY FUNCTION
+
+function educatioN1(location) {
+  var image = 'img/map_markers_new/party.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq4 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">НПМ "Україна"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Велика Васильківська, 103</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq4
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersParty1.push(marker);
+}
+
+function educatioN2(location) {
+  var image = 'img/map_markers_new/party.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq44 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Ресторан "SLIVKI общества"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Звіринецька, 47</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq44
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersParty2.push(marker);
+}
+
+function educatioN3(location) {
+  var image = 'img/map_markers_new/party.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq444 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Ресторан "SLIVKI общества"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Звіринецька, 47</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq444
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersParty3.push(marker);
+}
+
+function educatioN4(location) {
+  var image = 'img/map_markers_new/party.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq4444 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">ТРЦ "Гулiвер"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Спортивна пл., 1а</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq4444
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersParty4.push(marker);
+}
+
+//--------------------------------------------------------------------------------------PARKS FUNCTION
+
+function parkS1(location) {
+  var image = 'img/map_markers_new/square.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq5 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Ботанічний Сад ім.М.М.Гришка</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Тимірязєвська, 4</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq5
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersPark1.push(marker);
+}
+
+function parkS2(location) {
+  var image = 'img/map_markers_new/square.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq55 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Печерський Ландшафтний Парк</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Лаврська, 33</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq55
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersPark2.push(marker);
+}
+
+function parkS3(location) {
+  var image = 'img/map_markers_new/square.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq555 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"Національний Музей Історії України у Другій світовій війні"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Лаврська, 24</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq555
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersPark3.push(marker);
+}
+
+function parkS4(location) {
+  var image = 'img/map_markers_new/square.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq5555 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Києво-Печерська Лавра</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Лаврська, 15</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq5555
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersPark4.push(marker);
+}
+
+function parkS5(location) {
+  var image = 'img/map_markers_new/square.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq55555 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Свято-Троїцький Іонінський монастир</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Тимірязєвська, 1</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq55555
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersPark5.push(marker);
+}
+
+//--------------------------------------------------------------------------------------SHOPS FUNCTION
+
+function shoP1(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq6 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"Велика Кишеня"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Залізничне шоссе, 57</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq6
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop1.push(marker);
+}
+
+function shoP2(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq66 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">ТРЦ "Ocean Plaza"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Антоновича, 176</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq66
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop2.push(marker);
+}
+
+function shoP3(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq666 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"Фуршет"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Інженерна, 1</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq666
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop3.push(marker);
+}
+
+function shoP4(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq6666 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Магазин органічних продуктів "Натур Бутік"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Кіквідзе, 6</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq6666
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop4.push(marker);
+}
+
+function shoP5(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq66666 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Спортмастер</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">бул. Лесі Українки, 28</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq66666
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop5.push(marker);
+}
+
+function shoP6(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq666666 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"OKwine"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Звіринецька, 59</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq666666
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop6.push(marker);
+}
+
+function shoP7(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq6666666 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"Укрпромпостач"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Драгомирова, 7</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq6666666
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop7.push(marker);
+}
+
+function shoP8(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq66666666 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"Сирне Королівство"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center">вул. Драгомирова, 12</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq66666666
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop8.push(marker);
+}
+
+function shoP9(location) {
+  var image = 'img/map_markers_new/shop.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq666666666 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">"NOVUS"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">бул. Дружби Народів, 16А</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq666666666
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersShop9.push(marker);
+}
+
+//--------------------------------------------------------------------------------------MEDICAL FUNCTION
+
+function medicaL1(location) {
+  var image = 'img/map_markers_new/medical.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq7 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Медичний центр "Doctor Sam"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Драгомирова, 20</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq7
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMedical1.push(marker);
+}
+
+function medicaL2(location) {
+  var image = 'img/map_markers_new/medical.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq77 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Міська клінічна лікарня №12</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Професора Підвисоцького, 4</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq77
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMedical2.push(marker);
+}
+
+function medicaL3(location) {
+  var image = 'img/map_markers_new/medical.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq777 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Медичний центр "Кукушка"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Німанська, 6</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq777
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMedical3.push(marker);
+}
+
+function medicaL4(location) {
+  var image = 'img/map_markers_new/medical.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq7777 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Стоматологічний центр "Віта-Дент"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Марії Приймаченко, 5</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq7777
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMedical4.push(marker);
+}
+
+function medicaL5(location) {
+  var image = 'img/map_markers_new/medical.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq77777 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Стоматологічний центр "Дент-ін"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Кіквідзе, 11</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq77777
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markersMedical5.push(marker);
+}
+
+//--------------------------------------------------------------------------------------EMBRASSY FUNCTION
+
+
+
+function embassy(location) {
+  var image = 'img/map_markers_new/embassy.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq8 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Посольство Литовської Республіки в Україні</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Буслівська, 21</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq8
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markers7.push(marker);
+}
+function embassY(location) {
+  var image = 'img/map_markers_new/embassy.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq88= '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Посольство ОАЕ в Україні</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Новосельська, 3</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq88
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markers71.push(marker);
+}
+
+//--------------------------------------------------------------------------------------COURT FUNCTION
+
+function court(location) {
+  var image = 'img/map_markers_new/court.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq9 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Окружний адміністративний суд міста Києва</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Петра Болбочана, 8</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq9
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markers8.push(marker);
+}
+
+//--------------------------------------------------------------------------------------BC FUNCTION
+
+function bc(location) {
+  var image = 'img/map_markers_new/BC.png';
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    icon: image
+  });
+  var qq10 = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h5 id="firstHeading" class="firstHeading">Бізнес-центр "IQ"</h5>'+
+      '<div id="bodyContent">'+
+      '<p align="center ">вул. Болсуновська, 13-15</p>'+
+      '</div>'+
+      '</div>';
+
+  var infowindow = new google.maps.InfoWindow({
+    content: qq10
+  });
+
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  markers9.push(marker);
+}
+
+
+
+
+
+// ----------------------------Sets the map on all markers in the array----------------------------
+
+//--------------------------------------------------METRO
+function setMapOnAll(map) {
+  for (var i = 0; i < markersMetro1.length; i++) {
+    markersMetro1[i].setMap(map);
+  }
+  for (var i = 0; i < markersMetro2.length; i++) {
+    markersMetro2[i].setMap(map);
+  }
+  for (var i = 0; i < markersMetro3.length; i++) {
+    markersMetro3[i].setMap(map);
+  }
+  for (var i = 0; i < markersMetro4.length; i++) {
+    markersMetro4[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------School
+function setMapOnAll1(map) {
+  for (var i = 0; i < markersSchool1.length; i++) {
+    markersSchool1[i].setMap(map);
+  }
+  for (var i = 0; i < markersSchool2.length; i++) {
+    markersSchool2[i].setMap(map);
+  }
+  for (var i = 0; i < markersSchool3.length; i++) {
+    markersSchool3[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------SPORTS
+function setMapOnSports(map) {
+  for (var i = 0; i < markersSport1.length; i++) {
+    markersSport1[i].setMap(map);
+  }
+  for (var i = 0; i < markersSport2.length; i++) {
+    markersSport2[i].setMap(map);
+  }
+  for (var i = 0; i < markersSport3.length; i++) {
+    markersSport3[i].setMap(map);
+  }
+  for (var i = 0; i < markersSport4.length; i++) {
+    markersSport4[i].setMap(map);
+  }
+  for (var i = 0; i < markersSport5.length; i++) {
+    markersSport5[i].setMap(map);
+  }
+  for (var i = 0; i < markersSport6.length; i++) {
+    markersSport6[i].setMap(map);
+  }
+  for (var i = 0; i < markersSport7.length; i++) {
+    markersSport7[i].setMap(map);
+  }
+  for (var i = 0; i < markersSport8.length; i++) {
+    markersSport8[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------PARTY
+function setMapOnEducation(map) {
+  for (var i = 0; i < markersParty1.length; i++) {
+    markersParty1[i].setMap(map);
+  }
+  for (var i = 0; i < markersParty2.length; i++) {
+    markersParty2[i].setMap(map);
+  }
+  for (var i = 0; i < markersParty3.length; i++) {
+    markersParty3[i].setMap(map);
+  }
+  for (var i = 0; i < markersParty4.length; i++) {
+    markersParty4[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------PARKS
+function setMapOnParks(map) {
+  for (var i = 0; i < markersPark1.length; i++) {
+    markersPark1[i].setMap(map);
+  }
+  for (var i = 0; i < markersPark2.length; i++) {
+    markersPark2[i].setMap(map);
+  }
+  for (var i = 0; i < markersPark3.length; i++) {
+    markersPark3[i].setMap(map);
+  }
+  for (var i = 0; i < markersPark4.length; i++) {
+    markersPark4[i].setMap(map);
+  }
+  for (var i = 0; i < markersPark5.length; i++) {
+    markersPark5[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------SHOPS
+function setMapOnShop(map) {
+  for (var i = 0; i < markersShop1.length; i++) {
+    markersShop1[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop2.length; i++) {
+    markersShop2[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop3.length; i++) {
+    markersShop3[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop4.length; i++) {
+    markersShop4[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop5.length; i++) {
+    markersShop5[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop6.length; i++) {
+    markersShop6[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop7.length; i++) {
+    markersShop7[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop8.length; i++) {
+    markersShop8[i].setMap(map);
+  }
+  for (var i = 0; i < markersShop9.length; i++) {
+    markersShop9[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------MEDICAL
+function setMapOnMedical(map) {
+  for (var i = 0; i < markersMedical1.length; i++) {
+    markersMedical1[i].setMap(map);
+  }
+  for (var i = 0; i < markersMedical2.length; i++) {
+    markersMedical2[i].setMap(map);
+  }
+  for (var i = 0; i < markersMedical3.length; i++) {
+    markersMedical3[i].setMap(map);
+  }
+  for (var i = 0; i < markersMedical4.length; i++) {
+    markersMedical4[i].setMap(map);
+  }
+  for (var i = 0; i < markersMedical5.length; i++) {
+    markersMedical5[i].setMap(map);
+  }
+
+}
+
+//--------------------------------------------------EMBASSY
+function setMapOnEmbassy(map) {
+  for (var i = 0; i < markers7.length; i++) {
+    markers7[i].setMap(map);
+  }
+  for (var i = 0; i < markers71.length; i++) {
+    markers71[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------COURT
+function setMapOnCourt(map) {
+  for (var i = 0; i < markers8.length; i++) {
+    markers8[i].setMap(map);
+  }
+}
+
+//--------------------------------------------------BC
+function setMapOnBc(map) {
+  for (var i = 0; i < markers9.length; i++) {
+    markers9[i].setMap(map);
+  }
+}
+
+
+
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+  setMapOnAll(null);
+  setMapOnAll1(null);
+  setMapOnSports(null);
+  setMapOnEducation(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnEmbassy(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+
+// Shows any markers currently in the array.
+function showMarkers() {
+  setMapOnAll(map);
+  setMapOnAll1(null);
+  setMapOnSports(null);
+  setMapOnEducation(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnEmbassy(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+function showMarkers1() {
+  setMapOnAll1(map);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnEducation(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnEmbassy(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+function showSports() {
+  setMapOnSports(map);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnEducation(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnEmbassy(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+function showEducation() {
+  setMapOnEducation(map);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnEmbassy(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+function showParks() {
+  setMapOnEducation(null);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnParks(map);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnEmbassy(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+
+function showShop() {
+  setMapOnEducation(null);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnParks(null)
+  setMapOnMedical(null);
+  setMapOnShop(map);
+  setMapOnEmbassy(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+
+function showMedical() {
+  setMapOnEducation(null);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnEmbassy(null);
+  setMapOnMedical(map);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+
+function showEmbassy() {
+  setMapOnEmbassy(map);
+  setMapOnEducation(null);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnBc(null);
+  setMapOnCourt(null);
+}
+
+function showCourt() {
+  setMapOnEmbassy(null);
+  setMapOnEducation(null);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnCourt(map);
+  setMapOnBc(null);
+}
+
+function showBc() {
+  setMapOnEmbassy(null);
+  setMapOnEducation(null);
+  setMapOnAll1(null);
+  setMapOnAll(null);
+  setMapOnSports(null);
+  setMapOnParks(null);
+  setMapOnShop(null);
+  setMapOnMedical(null);
+  setMapOnCourt(null);
+  setMapOnBc(map);
+}
+
+// Показать все
+function showAll() {
+  setMapOnAll1(map);
+  setMapOnAll(map);
+  setMapOnSports(map);
+  setMapOnEducation(map);
+  setMapOnParks(map);
+  setMapOnShop(map);
+  setMapOnMedical(map);
+  setMapOnEmbassy(map);
+  setMapOnCourt(map);
+  setMapOnBc(map); 
+}
+
+$(document).ready(function() {
+    $("input:checkbox").click(function() {
+        $("input:checkbox").prop("checked", false);
+        this.checked = true;
+    });
+});
+
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKSSFZn5y-vY5Yg9kjMVE_xPHwFg40WZI&callback=initMap&signed_in=true&callback=initMap"></script>
+
+        
+
+  </body>
+</html>

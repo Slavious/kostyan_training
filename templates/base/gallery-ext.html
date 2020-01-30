@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/jquery.min.js"></script>
+        
+
+        <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap.min.js"></script>
+        <!-- Custom styles -->
+    <link href=".css" rel="stylesheet">
+
+    <style>
+
+      html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+  .small-images a, .big-images a {
+      display:inline-block
+  }
+  .small-images .selected {
+      border: solid 2px #181438;
+  }
+
+  #big-image img{
+    border: solid 2px #bd6545;
+    border-radius: 2px; 
+    margin-top: 5px;
+  }
+
+    </style>
+
+  </head>
+  <body>
+
+  <a href="javascript:window.open('','_self').close();" style="text-decoration: none; color: white; font-size:35px;"><div style="position: absolute; z-index: 9999; top: 91%; left: 89.6%; background: #181438; border: solid #bd6545 2px; border-radius: 1px; padding: 20px; padding-left: 35px; padding-right: 35px;">НАЗАД</div></a> 
+
+
+              <div style="display: inherit; position: absolute; width: 218px; height: 200px; top: 3%; left: 2%; text-align: center;">
+
+                <a href="#" target="_self" style="color:#b96a41; font-size: 21px; position: ; top:1%; left:1%;text-decoration: none;text-transform: uppercase;"><b>Дитяча кімната</b></a>
+                <hr>
+                <a href="gallery_int.html" target="_self" style="color:#b96a41; font-size: 20px; position: ; top:1%; left:1%;text-decoration: none;text-transform: uppercase;">Вхiдна группа</a>
+                <hr>
+                <a href="gallery_fasady.html" target="_self" style="color:#b96a41; font-size: 21px; position: ; top:1%; left:1%;text-decoration: none;text-transform: uppercase;">Фасади</a>
+                <hr>
+              </div>
+
+
+
+<div id="big-image" style="text-align: center;">
+    <img src="img/general_gallery/child/Edelveys_Laundz_LG_View03_.png" width="1300" style="margin-top: 80px;">
+    <img src="img/general_gallery/child/Edelveys_Laundz_LG_View04_.png" width="1300" style="margin-top: 80px;">
+    <img src="img/general_gallery/child/Edelveys_Laundz_LG_View05_.png" width="1300" style="margin-top: 80px;">
+</div>
+
+<div class="small-images" style="margin-top: 10px;">
+    <img src="img/general_gallery/child/Edelveys_Laundz_LG_View03_.png" width="200" style="position: absolute; left: 57%; top: 87%; border: solid 1px #181438;">
+    <img src="img/general_gallery/child/Edelveys_Laundz_LG_View04_.png" width="200" style="position: absolute; left: 46%; top: 87%; border: solid 1px #181438;">
+    <img src="img/general_gallery/child/Edelveys_Laundz_LG_View05_.png" width="200" style="position: absolute; left: 35%; top: 87%; border: solid 1px #181438;">
+</div>
+
+<div class="next" style="position: absolute; left: 90%; top: 45%;"><img src="img/right-arrow.png" width="80"></div>
+<div class="prev" style="position: absolute; left: 6%; top: 45%;"><img src="img/left-arrow.png" width="80"></div>
+
+
+
+
+
+<script>
+     
+  
+ $(function(){
+    var $big= $("#big-image img");
+    var $small = $('.small-images img');
+    $big.not(':first').hide();
+    $small.first().addClass('selected');
+    
+    $small.click(function(e){
+        $small.removeClass('selected');
+        var i = $(this).addClass('selected').index();
+        $big.hide().eq(i).show();
+    });
+    
+    $('.next, .prev').click(function() {
+        var m = $(this).hasClass('next') ? 'next' : 'prev';
+        var m1 = $(this).hasClass('prev') ? 'next' : 'prev';
+
+        var $t = $small.filter('.selected')[m]();
+        var $t1 = $small.filter('.selected')[m1]();
+        if ($t.length) {
+            $small.eq($t.index()).click();
+        }else if($t1.length){
+            $small.eq($t1.index()).click();
+        }
+    });
+    
+});
+
+
+</script> 
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+  <a href="javascript:window.open('','_self').close();" id="mydiv"><div style="position: absolute; z-index: 99999; top: 88%; left: 89.6%; background: #181438; border: solid #bd6545 2px; border-radius: 1px; padding: 20px; padding-left: 35px; padding-right: 35px;" id="mydivheader">НАЗАД</div></a>
+
+  <h2 style="text-align: center; color: #1d1737; padding: 4px; margin: 0px; background: #fff; border-bottom: solid 1px #1d1737; position: absolute; top: 0px; width: 100%;"><b>ВIДЕО</b></h2>
+
+  <video src="video/EDELBURG_PRESENTATION_RUS_2.mp4" controls="" loop="" autoplay="" id="videoPlayer"></video>
+
+  
+
+
+
+  <script src="js/bootstrap.min.js"></script>
+
+  <script>
+    var videoPlayer = document.getElementById('videoPlayer');
+
+    // Auto play, half volume.
+    videoPlayer.play()
+    videoPlayer.volume = 0.6;
+
+    // Play / pause.
+    videoPlayer.addEventListener('click', function () {
+        if (videoPlayer.paused == false) {
+            videoPlayer.pause();
+            videoPlayer.firstChild.nodeValue = 'Play';
+        } else {
+            videoPlayer.play();
+            videoPlayer.firstChild.nodeValue = 'Pause';
+        }
+    });
+
+    
+</script>
+
+<script>
+  //Make the DIV element draggagle:
+dragElement(document.getElementById(("mydiv")));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
+  
+</body>
+</html>
