@@ -77,5 +77,4 @@ class BaseController extends AbstractController
     {
         return $this->render('admin/building_add.html.twig', []);
     }
-
 }
