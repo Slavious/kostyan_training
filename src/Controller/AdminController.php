@@ -25,7 +25,38 @@ class AdminController extends AbstractController
     {
         return $this->render('admin/building_add.html.twig', []);
     }
+    /**
+     * @Route("/admin/building/save", name="buildingSave")
+     */
+    public function buildingSave(Request $request)
+    {
+
+            $name      =  $request->get('name');
+            $url       =  $request->get('url');
+            $logo      =  $request->get('logo');
+            $background = $request->get('background');
+            $brandName =  $request->get('brandName');
+
+        if (!$name || !$url || !$brandName)
+             {
+                     return $this->json(false);
 
 
+              }
+        $building = new Building(); //- создание новой сущности
+        $building->setName($name); //- назначаем имя
+        $building->setUrl($url); //- назначаем урл
+        $building->setLogo($logo); //- назначаем лого
+        $building->setBackground($background); //- назначаем фон
+        $building->setBrandName($brandName); //- назначаем имя бренда
+        $this->getDoctrine()->getManager()->persist($building); //- записываем с возможностью отката
+        $this->getDoctrine()->getManager()->flush(); //- записываем окончательно
+        {
+            return $this->json(true);
+        }
+
+
+
+    }
 
 }
