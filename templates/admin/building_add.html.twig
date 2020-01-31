@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <form action>
-    <p><input type="text" name="name" > <br>
-    <input type="text" url="url" ><br>
-    <input type="file" src="logo" ><br>
-    <input type="text" BrandName="BrandName" ></p>
-    <button type="submint">отправить</button>
+    <form action="{{ path('buildingSave')}}" method="POST">
+    <p> <input type="text"  name="$name" /> <br>
+        <input type="text"  url="$url" /><br>
+        <input type="file"  img="$logo" /><br>
+        <input type="file" background=$background" /><br>
+        <input type="text" brandName="$brandName" /></p>
+        <button type="submint">отправить</button>
     </form>
 {% endblock %}
