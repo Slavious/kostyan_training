@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <form name="sql_action" action="{{ path('buildingSave')}}" method="POST">
+    <a>Добавление ЖК</a>
+    <form name="sql_building" action="{{ path('buildingSave')}}" method="POST">
     <p> <input type="text"  name='name' > <br>
         <input type="text"  name='url' ><br>
         <input type="file"  name='logo' ><br>
@@ -8,4 +9,14 @@
         <input type="text" name='brandName' ></p>
         <button type="submint" >отправить</button>
     </form>
+    <a>Добавление кнопок</a>
+    <form name="sql_button" action="{{ path('buttonsSave')}}" method="POST">
+        <p> <input type="text"  name='b_name' > <br>
+            <input type="text" name='b_building' ></p>
+            <input type="file"  name='b_img' ><br>
+            <input type="file" name='b_background'><br>
+            <input type="text"  name='b_url' ><br>
+        <button type="submint" >отправить</button>
+    </form>
+
 {% endblock %}
