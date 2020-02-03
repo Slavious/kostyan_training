@@ -1,3 +1,7 @@
 index:
     path: /
     controller: App\Controller\BaseController::index
+
+buttons_add:
+    path: /admin/building/{id}/buttons
+    controller: App\Controller\AdminController::addButtons

@@ -1,0 +1,43 @@
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <div class="container">
+    <div class="row">
+        <div class="col-6">
+            {% if buildings is empty %}
+                <a href="{{ path('buildinAdd') }}">Добавить новый объект</a>
+            {% endif %}
+            <ul>
+                {% for build in buildings %}
+                    <li id="build-{{ build.id }}">{{ build.name }}
+                        <span>
+                            <a class="btn btn-success" id="select" href="{{ path('buttons_add', { id: build.id }) }}">Добавить кнопку</a>
+                            <button class="btn btn-warning" id="delete" value="{{ path('building_delete', { id: build.id }) }}">Удалить</button>
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{  asset('js/bootstrap.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#delete").on('click', function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                if (confirm('Are you sure?')) {
+                    $.ajax({
+                        url: $(this).val(),
+                        success: function () {
+                            alert('Bulding was been deleted.')
+                            document.location.reload();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
