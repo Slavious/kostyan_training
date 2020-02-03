@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,16 @@ class Building
      * @ORM\Column(type="string", length=255)
      */
     private $brand_name;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Buttons", mappedBy="builiding_id")
+     */
+    private $buttons;
+
+    public function __construct()
+    {
+        $this->buttons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +114,37 @@ class Building
     public function setBrandName(string $brand_name): self
     {
         $this->brand_name = $brand_name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Buttons[]
+     */
+    public function getButtons(): Collection
+    {
+        return $this->buttons;
+    }
+
+    public function addButton(Buttons $button): self
+    {
+        if (!$this->buttons->contains($button)) {
+            $this->buttons[] = $button;
+            $button->setBuilidingId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeButton(Buttons $button): self
+    {
+        if ($this->buttons->contains($button)) {
+            $this->buttons->removeElement($button);
+            // set the owning side to null (unless already changed)
+            if ($button->getBuilidingId() === $this) {
+                $button->setBuilidingId(null);
+            }
+        }
 
         return $this;
     }
