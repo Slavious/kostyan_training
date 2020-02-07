@@ -37,15 +37,11 @@ class Buttons
     private $url;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $building;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\building", inversedBy="buttons")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $builiding_id;
+    private $building;
+
 
     public function getId(): ?int
     {
@@ -100,27 +96,16 @@ class Buttons
         return $this;
     }
 
-    public function getBuilding(): ?string
+    public function getBuilding(): ?Building
     {
         return $this->building;
     }
 
-    public function setBuilding(?string $building): self
+    public function setBuilding($building): ?Building
     {
         $this->building = $building;
 
-        return $this;
+        return $building;
     }
 
-    public function getBuilidingId(): ?building
-    {
-        return $this->builiding_id;
-    }
-
-    public function setBuilidingId(?building $builiding_id): self
-    {
-        $this->builiding_id = $builiding_id;
-
-        return $this;
-    }
 }

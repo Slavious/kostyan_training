@@ -15,9 +15,9 @@
     <a>Добавление кнопок</a>
     <form name="sql_button" action="{{ path('buttons_save')}}" method="POST">
         <input type="text" class="form-control"  name='button_name'> <br>
-        <input type="text" class="form-control" name='button_building'>
+        <input type="hidden" class="form-control" name='building' value="{{ building.id }}">
         <input type="text" class="form-control" name='button_url' ><br>
-        <button class="btn btn-primary" type="submint" >отправить</button>
+        <button class="btn btn-primary" type="submit" >отправить</button>
     </form>
     {% endif %}
     </div>

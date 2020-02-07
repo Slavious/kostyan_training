@@ -59,12 +59,15 @@ class AdminController extends AbstractController
      */
     public function buttonsSave(Request $request)
     {
+        $buildingId = $request->request->get('building');
+        $building = $this->getDoctrine()->getRepository(Building::class)->find($buildingId);
+        $buttonName = $request->get('button_name');
+        $buttonUrl = $request->get('button_url');
+
         $buttons = new buttons(); //- создание новой сущности
-        $buttons-> setName($b_name); //- назначаем имя
-        $buttons-> setUrl($b_url); //- назначаем урл
-        $buttons-> setImg($b_img); //- назначаем лого
-        $buttons-> setBackground($b_background); //- назначаем фон
-        $buttons-> setBuilding($b_buildingName); //- назначаем имя бренда
+        $buttons-> setName($buttonName); //- назначаем имя
+        $buttons-> setUrl($buttonUrl); //- назначаем урл
+        $buttons-> setBuilding($building); //- назначаем имя бренда
         $this->getDoctrine()->getManager()->persist($buttons); //- записываем с возможностью отката
         $this->getDoctrine()->getManager()->flush(); //- записываем окончательно
 

@@ -38,15 +38,18 @@ class Building
      */
     private $background;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $brand_name;
+
+    //private $brand_name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Buttons", mappedBy="builiding_id")
      */
     private $buttons;
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 
     public function __construct()
     {

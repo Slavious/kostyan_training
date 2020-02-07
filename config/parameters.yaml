@@ -1,6 +1,6 @@
 doctrine:
   dbal:
-    url: mysql://root@localhost:3306/table
+    url: mysql://root@localhost:3306/new
     dbname: table
     host: localhost
     user: root
