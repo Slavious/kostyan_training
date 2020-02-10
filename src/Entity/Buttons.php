@@ -37,7 +37,7 @@ class Buttons
     private $url;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\building", inversedBy="buttons")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Building", inversedBy="buttons")
      * @ORM\JoinColumn(nullable=false)
      */
     private $building;
