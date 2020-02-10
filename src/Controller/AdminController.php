@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\ButtonRepository;
 use App\Entity\Building;
 use App\Entity\Buttons;
 class AdminController extends AbstractController
@@ -98,6 +99,18 @@ class AdminController extends AbstractController
         $buttons = $this->getDoctrine()->getRepository(Buttons::class)->findBy(['building' => $building]);
 
         return $this->render('admin/building_add.html.twig', ['buttons' => $buttons, 'building' => $building]);
+    }
+
+    /**
+     * @Route("/admin/building/buttons/{id}", name="buttons_edit")
+     */
+    public function buttonsEdit($id)
+    {
+        $buttons = $this->getDoctrine()->getRepository(Buttons::class)->find($id);
+        if (!$buttons) {
+            throw $this->NotFoundHttpException('No buttons found for id' . $id);
+        }
+        return $this->render('admin/buttons_edit.html.twig', ['buttons' => $buttons]);
     }
 
 }

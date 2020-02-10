@@ -9,13 +9,15 @@
         <input type="file"  name='logo' ><br>
         <input type="file" name='background' ><br>
         <input type="text" name='brandName' ></p>
-        <button type="submint" >отправить</button>
+        <button type="submit">Добавить</button>
     </form>
     {% else %}
         <h4>Добавленные кнопки</h4>
         <ul>
         {% for button in buttons %}
-            <li>Имя кнопки: {{ button.name }} <b>УРЛ: {{ button.url }}</b></li>
+            <li>Имя кнопки: {{ button.name }} <b>УРЛ: {{ button.url }}</b>
+            <a class="btn btn-edit" id="edit" href="{{ path('buttons_edit', { id: button.id }) }}">Изменить</a>
+            </li>
         {% endfor %}
         </ul>
     <h4>Добавление кнопок</h4>
@@ -23,7 +25,7 @@
         <input type="text" class="form-control"  name='button_name'> <br>
         <input type="hidden" class="form-control" name='building' value="{{ building.id }}">
         <input type="text" class="form-control" name='button_url' ><br>
-        <button class="btn btn-primary" type="submit" >отправить</button>
+        <button class="btn btn-primary" type="submit" >Добавить</button>
     </form>
     {% endif %}
     </div>
